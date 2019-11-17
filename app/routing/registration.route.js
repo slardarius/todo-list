@@ -9,7 +9,7 @@ const pathRoute = {
 
 
 router.get(pathRoute.getUserInfo, (req, res) => {
-  console.log(req);
+  // console.log(req);
   res.status(200).json({
     success: 0,
     result: {}
