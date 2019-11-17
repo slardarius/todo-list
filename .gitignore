@@ -52,3 +52,4 @@ report
 gulp_deploy.js
 .DS_Store
 Dockerfile
+.idea/workspace.xml
