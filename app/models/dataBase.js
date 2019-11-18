@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const environment = require('../../environment');
 
 class DataBase {
   static connect() {

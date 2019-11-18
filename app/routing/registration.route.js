@@ -1,18 +1,30 @@
 const { Router } = require('express');
+const User = require('../models/User');
 
 const router = Router();
 
 const pathRoute = {
-  getUserInfo: '/api/v1/get_user_info',
-  regUser: '/api/v1/registration_user',
+  getUserInfoById: '/api/v1/get_user_info',
+  registrationUser: '/api/v1/registration_user',
+  getListOfUsers: '/api/v1/get_users_info',
 };
 
 
-router.get(pathRoute.getUserInfo, (req, res) => {
-  // console.log(req);
-  res.status(200).json({
-    success: 0,
-    result: {}
+router.get(pathRoute.getListOfUsers, (req, res) => {
+  const user = new User().connectToTable();
+  user.find(undefined, (err, users) => {
+    if (err) {
+      res.status(500)
+        .json({
+          success: 1,
+          message: err,
+        });
+      throw Error(err);
+    }
+    res.status(200).json({
+      success: 0,
+      result: users
+    });
   });
 });
 

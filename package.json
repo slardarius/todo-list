@@ -18,7 +18,7 @@
       }
     },
     "dev": {
-      "command": "nodemon ./app/index.js",
+      "command": "nodemon ./app/index.js --experimental-worker",
       "env": {
         "NODE_ENV": "development"
       }
