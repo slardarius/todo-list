@@ -15,6 +15,10 @@ class User {
         type: Date,
         required: false,
       },
+      update_at: {
+        type: Date,
+        require: false,
+      },
       user_image: {
         type: String,
         required: false,
@@ -32,6 +36,11 @@ class User {
           ]
         }
       ]
+    });
+
+    this.userSchema.method('transform', () => {
+      const obj = this.toObject();
+      obj.id = obj._id;
     });
   }
 
