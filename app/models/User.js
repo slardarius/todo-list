@@ -1,33 +1,52 @@
+const { Schema, model } = require('mongoose');
+
 class User {
-  constructor(userName = '', email = '') {
-    this.userName = userName;
-    this.email = email;
+  constructor() {
+    this.userSchema = Schema({
+      user_name: {
+        type: String,
+        required: false,
+      },
+      email: {
+        type: String,
+        required: false,
+      },
+      create_at: {
+        type: Date,
+        required: false,
+      },
+      update_at: {
+        type: Date,
+        require: false,
+      },
+      user_image: {
+        type: String,
+        required: false,
+      },
+      user_tabs: [
+        {
+          id: Schema.Types.ObjectId,
+          title: String,
+          ids_of_task: [
+            {
+              title: String,
+              id: Schema.Types.ObjectId,
+              is_complete: Boolean,
+            }
+          ]
+        }
+      ]
+    });
+
+    this.userSchema.method('transform', () => {
+      const obj = this.toObject();
+      obj.id = obj._id;
+    });
   }
 
-  saveUser() {
-    console.log(this);
-  }
-
-  getUserById(userId) {
-    console.log(this, userId);
-  }
-
-  createUserTab() {
-    console.log(this, 'createUserTab');
-  }
-
-  removeUserTab() {
-    console.log(this, 'removeUserTab');
-  }
-
-  getInfoUserTab() {
-    console.log(this, 'getInfoUserTab');
-  }
-
-  createUserTask() {
-    console.log(this, 'createUserTask');
+  connectToTable() {
+    return model('User', this.userSchema);
   }
 }
 
-//
 module.exports = User;

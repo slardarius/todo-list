@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
-const environment = require('../../environment');
 
 class DataBase {
   static connect() {
-    return mongoose.connect(environment.uerToDB
-        + environment.dataBaseName, { userNewUrlParser: true });
+    return mongoose.connect(process.env.URL_TO_DB
+        + process.env.DATA_BASE_NAME, { userNewUrlParser: true });
   }
 
   static randomValue() {
