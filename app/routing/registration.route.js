@@ -1,5 +1,13 @@
 const { Router } = require('express');
 const User = require('../models/User');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+
+
+const upload = multer({
+  dest: path.resolve(__dirname, '..') + '/public/',
+});
 
 const router = Router();
 const user = new User().connectToTable();
@@ -49,8 +57,12 @@ router.get(pathRoute.getUserInfoById, (req, res) => {
 });
 
 
-router.post(pathRoute.registrationUser, (req, res) => {
-  console.log(req.body);
+router.post(pathRoute.registrationUser, upload.single('user_avatar'),(req, res) => {
+  const tempePath = req.file.path;
+  const targetPath = path.join(path.resolve(__dirname, '..'), 'public/' + req.file.filename + '.jpeg');
+  fs.rename(tempePath, targetPath, err => {
+    if (err) throw err.stack;
+  });
   res.status(200).json({
     success: 0,
     result: {},

@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const dotenv = require('dotenv');
 const path = require('path');
 const bodyParser = require('body-parser');
-//
+// REDIS.
 const dataBase = require('./models/dataBase');
 const registrationRouting = require('./routing/registration.route');
 const application = express();
@@ -24,7 +24,8 @@ if (process.env.NODE_ENV === 'development') {
 }
 //
 application.use(bodyParser.urlencoded({extended: false}));
-application.use(bodyParser.json());
+application.use(bodyParser.json({limit: '50mb', extended: true}));
+application.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 application.use(express.static(__dirname + '/app/public'));
 application.use(registrationRouting);
 //
