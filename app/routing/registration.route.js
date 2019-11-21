@@ -57,16 +57,37 @@ router.get(pathRoute.getUserInfoById, (req, res) => {
 });
 
 
-router.post(pathRoute.registrationUser, upload.single('user_avatar'),(req, res) => {
+router.post(pathRoute.registrationUser, upload.single('user_image'), async (req, res) => {
   const tempePath = req.file.path;
   const targetPath = path.join(path.resolve(__dirname, '..'), 'public/' + req.file.filename + '.jpeg');
   fs.rename(tempePath, targetPath, err => {
-    if (err) throw err.stack;
+    if (err) {
+      res.status(500)
+      .json({
+        success: 1,
+        message: 'Can\'t save image.'
+      })
+    }
   });
-  res.status(200).json({
-    success: 0,
-    result: {},
-  })
+  await user.insertMany({
+    user_name: req.body.user_name,
+    email: req.body.email,
+    create_at: new Date(),
+    update_at: new Date(),
+    user_image: '/static/' + req.file.filename + '.jpeg',
+    user_tabs: [
+      {
+        title: 'Default',
+        ids_of_tasks: [],
+      }
+    ]
+  }, (err, cUser) => {
+    if (err) {
+      res.status(500).json({success: 1, message: 'Can\'t save user in DATA BASE.'});
+      throw Error(err);
+    }
+    res.status(200).json({success: 0, result: cUser});
+  });
 });
 
 

@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === 'development') {
 application.use(bodyParser.urlencoded({extended: false}));
 application.use(bodyParser.json({limit: '50mb', extended: true}));
 application.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
-application.use(express.static(__dirname + '/app/public'));
+application.use('/static', express.static(__dirname + '/public'));
 application.use(registrationRouting);
 //
 (async function onBootstrapApplication() {
