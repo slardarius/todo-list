@@ -3,7 +3,7 @@ const User = require('../models/User');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-
+const jwt = require('jsonwebtoken');
 
 const upload = multer({
   dest: path.resolve(__dirname, '..') + '/public/',
@@ -15,6 +15,8 @@ const pathRoute = {
   getUserInfoById: '/api/v1/get_user_info',
   registrationUser: '/api/v1/registration_user',
   getListOfUsers: '/api/v1/get_users_info',
+  logIn: '/api/v1/login',
+  logOut: '/api/v1/logout',
 };
 
 
@@ -79,7 +81,7 @@ router.post(pathRoute.registrationUser, upload.single('user_image'), async (req,
       {
         title: 'Default',
         ids_of_tasks: [],
-      }
+      } 
     ]
   }, (err, cUser) => {
     if (err) {
@@ -87,6 +89,31 @@ router.post(pathRoute.registrationUser, upload.single('user_image'), async (req,
       throw Error(err);
     }
     res.status(200).json({success: 0, result: cUser});
+  });
+});
+
+router.get(pathRoute.logIn, (req, res) => {
+  const {user_name, email} = req.query;
+  user.findOne({user_name, email}, (err, user) => {
+    if (err) {
+      res.status(404).json({success: 1, message: err});
+      throw Error(err);
+    }
+    console.log(user);
+    if (!user) {
+      res.status(404).json({success: 1, message: 'Wrong user name or email.'});
+    } else {
+      jwt.sign({user}, 'secret-key-todo-list', (err, token) => {
+        if (err) {
+          throw Error(error);
+        }
+        res.status(200).json({
+          success: 0,
+          result: user,
+          token,
+        });
+      })
+    }
   });
 });
 

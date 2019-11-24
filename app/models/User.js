@@ -23,6 +23,9 @@ class User {
         type: String,
         required: false,
       },
+      auth_token: {
+        type: String,
+      },
       user_tabs: [
         {
           id: Schema.Types.ObjectId,
