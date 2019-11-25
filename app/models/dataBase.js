@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
+const conf = require('../configuration/conf');
 
 class DataBase {
   static connect() {
-    return mongoose.connect(process.env.URL_TO_DB
-        + process.env.DATA_BASE_NAME, { userNewUrlParser: true });
+    return mongoose.connect('mongodb://' + conf.mongoHost + '/' + conf.mongoDbName, { userNewUrlParser: true });
   }
 
   static randomValue() {
